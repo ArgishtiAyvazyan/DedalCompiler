@@ -21,9 +21,6 @@ public:
 private:
     void make_jamps(TInstructionTable& program);
 
-    //template <class... TArgs>
-    //std::unique_ptr<BaseInstruction> get_instruction(const std::string& command, TArgs&& ... args);
-
     static std::unique_ptr<BaseInstruction> create_instruction_print(const std::size_t id);
 
     static std::unique_ptr<BaseInstruction> create_instruction_assign(const reg_id_t id, const int value);
