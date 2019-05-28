@@ -129,7 +129,9 @@
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="InstructionFramework.cpp" />
     <ClCompile Include="Instructions.cpp" />
+    <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -141,7 +143,9 @@
     <ClInclude Include="CPU.h" />
     <ClInclude Include="ExecutableCode.h" />
     <ClInclude Include="FileReader.h" />
+    <ClInclude Include="InstructionFramework.h" />
     <ClInclude Include="Instructions.h" />
+    <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="ParserDecl.h" />
     <ClInclude Include="ParserUtils.hpp" />

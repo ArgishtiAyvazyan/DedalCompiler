@@ -94,7 +94,7 @@ public:
     int64_t stack_pop(TypeSize::RegSize type_size);
 
 public:
-    CPU();
+    CPU(const size_t stack_size);
 
     ~CPU();
 
@@ -107,10 +107,10 @@ public:
     StatusRegister status_register;
 
 private:
+	static constexpr auto registers_count = 100u;
+    std::size_t m_stack_size;
     std::vector<int> m_processor_registers;
     char* const m_call_stack;
     char* m_stack_pointer;
 
-	static constexpr auto registers_count = 100u;
-    static constexpr auto max_stack_size = 255u;
 };

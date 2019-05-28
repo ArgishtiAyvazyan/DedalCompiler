@@ -1,29 +1,36 @@
 #include <iostream>
-#include "FileReader.h"
-#include <cassert>
-#include <regex>
-#include <string>
-#include "Parser.h"
-#include "ParserDecl.h"
-using namespace std::string_literals;
+#include "Compiler.h"
+#include "Interpreter.h"
 
+
+using namespace std::string_literals;
+using namespace std::string_view_literals;
 
 
 int main(int argc, char* argv[])
 // try
 {
-	FileReader fr{ R"(C:\Users\argishta\source\repos\dedal\dedal_test\tests\test1.txt)" };
-	Parser p{ fr.read_in() };
+	const auto file_path = R"(C:\Users\argishta\source\repos\dedal\dedal_test\tests\test1.txt)"sv;
+	
+	Compiler compiler{ file_path };
 
 
-	/*std::string var = ".SHATCK = [2245346]";
-	std::cout << var << std::endl;
-	std::smatch matches;
 
-	std::regex re("([[:digit:]]+)");
-	regex_search(var, matches, re);
-	const int number = stoi(matches[1]);
-	std::cout << number << std::endl;*/
+	const auto ec = compiler.compile_code();
+
+	std::cout << "Stack Size : " << ec.stack_size() << std::endl;
+
+	std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+
+	std::cout << "Data segment :\n" << ec.data_segment() << std::endl;
+
+	std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+
+	std::cout << "Code segment :\n" << ec.code_segment() << std::endl;
+
+	Interpreter interpreter{ compiler.compile_code() };
+
+	interpreter.run();
 
 	return 0;
 }

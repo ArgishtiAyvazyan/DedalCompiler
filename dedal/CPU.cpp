@@ -176,12 +176,13 @@ int64_t CPU::stack_pop(const TypeSize::RegSize type_size)
     return {};
 }
 
-CPU::CPU()
-    : m_ip{0}
+CPU::CPU(const size_t stack_size)
+    : m_stack_size{stack_size}
+	, m_ip{0}
     , status_register{}
     , m_processor_registers (registers_count)
-    , m_call_stack{new char[max_stack_size]}
-    , m_stack_pointer{m_call_stack + max_stack_size}
+    , m_call_stack{new char[m_stack_size]}
+    , m_stack_pointer{m_call_stack + m_stack_size}
 {
 }
 

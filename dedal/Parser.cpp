@@ -348,8 +348,6 @@ Parser::code_iterator Parser::parse_code_segment(code_iterator begin, code_itera
         case Instructions::jc:
         case Instructions::jnc:
         case Instructions::call:
-        case Instructions::push:
-        case Instructions::pop:
 			if (std::size(tokens) != 2)
 			{
 				throw std::invalid_argument{ "invalid instruction :\n"s + *it };
@@ -379,6 +377,9 @@ Parser::code_iterator Parser::parse_code_segment(code_iterator begin, code_itera
 			//m_code_segment_buffer << static_cast<int>(instruction);
 			break;
 		}
+		// not implement
+        case Instructions::push:
+        case Instructions::pop:
         default:
             assert(false);
         }
