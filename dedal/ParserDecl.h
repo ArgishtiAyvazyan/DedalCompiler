@@ -1,6 +1,7 @@
 #pragma once
 
 
+
 enum class Instructions
 {
 	assign,
@@ -23,6 +24,7 @@ enum class Instructions
 	end,
 	push,
 	pop,
+	label,
 };
 
 enum class Type

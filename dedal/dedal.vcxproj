@@ -72,7 +72,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -124,15 +124,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseInstruction.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Compiler.cpp" />
+    <ClCompile Include="CPU.cpp" />
     <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="Instructions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseInstruction.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Compiler.h" />
+    <ClInclude Include="CPU.h" />
+    <ClInclude Include="ExecutableCode.h" />
     <ClInclude Include="FileReader.h" />
+    <ClInclude Include="Instructions.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="ParserDecl.h" />
     <ClInclude Include="ParserUtils.hpp" />
