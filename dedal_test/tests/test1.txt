@@ -1,0 +1,16 @@
+.STACK = 1024
+
+
+.DATA
+CHAR var;
+CHAR var1;
+BYTE bVal;
+CHAR ch1 = 'A';
+CHAR str1[] = "Hello World!";
+BYTE bVal1;
+BYTE bVal2 = 255;
+BYTE abVal3[] = {2, 4, 8, 4,};
+BYTE abVal4[10];
+WORD wVal5 = 10;
+DWORD dwVal6 = 16;
+DWORD adwVal7[5] = {10,20,30,-43,};
