@@ -3,7 +3,7 @@
     #include "ParserDecl.h"
     #include <iostream>
     #include <stdio.h>
-    #include "y.tab.h"
+    #include "Parser.hpp"
 
     static std::string_view module = "lexer";
 
