@@ -10,9 +10,13 @@
 
 #include <string_view>
 
+/**
+ * @brief The types of messages. \n
+ *          Depending on the type of message, it is processed differently.
+ */
 enum class MessageType : char
 {
-    Info = 0
+      Info
     , Warning
     , Error
     , Debug
@@ -30,6 +34,13 @@ class UIO
 
 public:
 
+    /**
+     * @brief Writes message in console and log file.
+     * 
+     * @param message Message for writing.
+     * @param module The name of the module from which the writing occurs.
+     * @param eMessageType The message type. \n
+     */
     static void Write(std::string_view message, std::string_view module, MessageType eMessageType = MessageType::Info);
 
 private:

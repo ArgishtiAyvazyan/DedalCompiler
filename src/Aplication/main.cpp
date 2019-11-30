@@ -8,7 +8,7 @@ extern FILE* yyin;
 
 int yyparse();
 
-static std::string_view module = "main";
+static std::string_view module = "Main";
 
 int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
 {
@@ -20,7 +20,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
 
     if (argc < 2)
     {
-        Debug::Log(module, "Input file is missing", LogType::Error);
+        UIO::Write("Input file is missing", module, MessageType::Error);
         return -1;
     }
 
@@ -28,13 +28,13 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
 
     if (nullptr == yyin)
     {
-        Debug::Log(module, "Cannot open file.", LogType::Error);
+        UIO::Write("Cannot open file.", module, MessageType::Error);
         return -2;
     }
 
     if (0 != yyparse())
     {
-        Debug::Log(module, "Unknown result.", LogType::Error);
+        UIO::Write("Unknown result.", module, MessageType::Error);
     }
 
     std::cout << "End"<< std::endl;

@@ -14,26 +14,27 @@ if (MSVC)
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(
-        # -Wall
+        -g
+        -Wall
         # -Wextra
-        # -pedantic
-        # -Werror
-        # -Wfloat-equal
-        # -Wshadow
-        # -Wpointer-arith
-        # -ftrapv
-        # -fverbose-asm
-        # -finstrument-functions
-        # -Wcast-align
-        # -Wstrict-overflow=5
-        # -Wwrite-strings
-        # -Wcast-qual
+        -pedantic
+        -Werror
+        -Wfloat-equal
+        -Wshadow
+        -Wpointer-arith
+        -ftrapv
+        -fverbose-asm
+        -finstrument-functions
+        -Wcast-align
+        -Wstrict-overflow=5
+        -Wwrite-strings
+        -Wcast-qual
         # -Wswitch-default
-        # -Wswitch-enum
+        -Wswitch-enum
         # -Wconversion
-        # -Wunreachable-code
-        # -save-temps
-        # -Weffc++
+        -Wunreachable-code
+        -save-temps
+        -Weffc++
     )
 endif()
 

@@ -2,15 +2,31 @@
     #include <iostream>
     #include "Debug.h"
     #include "ParserDecl.h"
+    #include "UIO.h"
+    #include "Configs.hpp"
+
+
+
     int yylex();
     void yyerror(const char* msg);
 
-    static std::string_view module = "parser";
 
     extern std::size_t lineNumber;
     extern int yyint;
     extern char* yytext;
     extern std::string_view yyid;
+
+    static std::string_view module = "Parser";
+
+static void Logger(std::string_view message)
+{
+    if constexpr (Config::ENABLE_PARSER_LOGING)
+    {
+        const std::string sFullMessage = "Line : " + std::to_string(lineNumber) + " | " + message.data();
+        UIO::Write(sFullMessage, module, MessageType::Debug);
+    }
+}
+
 %}
 
 %error-verbose
@@ -50,7 +66,7 @@ segment
 stack_size
     : '=' NUMBER ';'
     {
-        Debug::Log(module, " <<< Stack size >>> : "s + std::to_string(yyint));
+        Logger(" >>>> Stack size <<<< : " + std::to_string(yyint));
     }
     ;
 
@@ -64,23 +80,23 @@ variable_declaration
     {
         // parsing variable type and name
         // ...
-        Debug::Log(module, lineNumber, "-> variable_type ID", yytext);
+        Logger("-> variable_type ID");
     }
     | variable_type ID '=' variable_initializer ';'
     {
-        Debug::Log(module, lineNumber, "-> variable_type ID '=' variable_initializer", yytext);
+        Logger("-> variable_type ID '=' variable_initializer");
     }
     | variable_type ID '[' ']' '=' variable_initializer_list ';'
     {
-        Debug::Log(module, lineNumber, "-> variable_type ID '[' ']' '=' variable_initializer_list", yytext);
+        Logger("-> variable_type ID '[' ']' '=' variable_initializer_list");
     }
     | variable_type ID '[' NUMBER ']' ';'
     {
-        Debug::Log(module, lineNumber, "-> variable_type ID '[' NUMBER ']'", yytext);
+        Logger("-> variable_type ID '[' NUMBER ']'");
     }
     | variable_type ID '[' NUMBER ']' '=' variable_initializer_list ';'
     {
-        Debug::Log(module, lineNumber, "-> variable_type ID '[' NUMBER ']' '=' variable_initializer_list", yytext);
+        Logger("-> variable_type ID '[' NUMBER ']' '=' variable_initializer_list");
     }
     ;
 
@@ -117,11 +133,11 @@ code_segment
 function
     : FUNC ID ':' instruction_list RET ';' E_FUNC
     {
-        Debug::Log(module, lineNumber, "Function Definition", yyid);
+        Logger("Function Definition");
     }
     | FUNC ID ';'
     {
-        Debug::Log(module, lineNumber, "Function forward Declaration", yyid);
+        Logger("Function forward Declaration");
     }
     ;
 
@@ -137,7 +153,7 @@ instruction
     | TEST full_instruction_parametr_list ';'
     | JUMP ID ';'
     {
-        Debug::Log(module, lineNumber, "Parse jump instruction.");
+        Logger("Parse jump instruction.");
     }
     | JZ ID ';'
     | JNZ ID ';'
@@ -205,7 +221,7 @@ instruction_parametr_list
 main_entry
     : '=' ID ';'
     {
-        Debug::Log(module, lineNumber, "MAIN '='", yyid);
+        Logger(std::string("MAIN '='") + yyid.data());
     }
     ;
 
@@ -216,6 +232,5 @@ void yyerror(const char* msg)
 {
     const std::string message = std::string(msg) + " Line : " + std::to_string(lineNumber)
         + "\n Last token : " + yytext + "\n";
-    Debug::Log(module, message
-        , LogType::Error);
+    UIO::Write(message, module, MessageType::Error);
 }

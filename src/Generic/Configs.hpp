@@ -19,7 +19,17 @@ public:
     /**
      * @brief if true, various mechanisms for checking the validity of the code \n
      *      are turned on, which can cause a slowdown in execution time and also \n
-     * includes a detailed infarmation for data output.
+     *      includes a detailed infarmation for data output.
      */
     static constexpr bool DEBUG = true;
+
+    /**
+     * @brief If true, the Parser logging system is enabled.
+     */
+    static constexpr bool ENABLE_PARSER_LOGING = true;
+
+    /**
+     * @brief If true, the Lexer logging system is enabled.
+     */
+    static constexpr bool ENABLE_LEXER_LOGING = true;
 };
