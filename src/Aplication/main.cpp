@@ -1,4 +1,7 @@
 #include <iostream>
+
+#include "UIO.h"
+
 #include "Debug.h"
 
 extern FILE* yyin;
@@ -7,8 +10,14 @@ int yyparse();
 
 static std::string_view module = "main";
 
-int main(int argc, char* argv[])
+int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
 {
+
+    UIO::Write("Messege", "module", MessageType::Info);
+    UIO::Write("Messege", "module", MessageType::Warning);
+    UIO::Write("Messege", "module", MessageType::Error);
+    UIO::Write("Messege", "module", MessageType::Debug);
+
     if (argc < 2)
     {
         Debug::Log(module, "Input file is missing", LogType::Error);
@@ -28,5 +37,6 @@ int main(int argc, char* argv[])
         Debug::Log(module, "Unknown result.", LogType::Error);
     }
 
+    std::cout << "End"<< std::endl;
     return 0;
 }
