@@ -1,0 +1,15 @@
+.vscode/*
+src/cmake_install.cmake
+src/CMakeCache.txt
+src/Makefile
+src/CMakeFiles/*
+src/*/cmake_install.cmake
+src/*/Makefile
+src/Aplication/gmain_exec
+src/Parser/Lexer.cpp
+src/Parser/Parser.cpp
+src/Parser/Parser.hpp
+src/*/*.a
+src/*/CMakeFiles/*
+src/*/*.s
+src/*/*.ii
