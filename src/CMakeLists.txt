@@ -33,7 +33,7 @@ else()
         -Wswitch-enum
         # -Wconversion
         -Wunreachable-code
-        -save-temps
+        # -save-temps
         -Weffc++
     )
 endif()
