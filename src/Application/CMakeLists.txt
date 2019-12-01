@@ -1,4 +1,4 @@
-project(Aplication)
+project(Application)
 
 # All sources that also need to be tested in unit tests go into a static library
 # add_library(Aplication_lib STATIC GMain.h)

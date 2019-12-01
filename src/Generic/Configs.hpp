@@ -26,10 +26,10 @@ public:
     /**
      * @brief If true, the Parser logging system is enabled.
      */
-    static constexpr bool ENABLE_PARSER_LOGING = true;
+    static constexpr bool ENABLE_PARSER_LOGING = false;
 
     /**
      * @brief If true, the Lexer logging system is enabled.
      */
-    static constexpr bool ENABLE_LEXER_LOGING = true;
+    static constexpr bool ENABLE_LEXER_LOGING = false;
 };

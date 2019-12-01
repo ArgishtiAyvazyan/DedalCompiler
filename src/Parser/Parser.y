@@ -1,5 +1,5 @@
 %{
-    #include <iostream>
+    #include <string>
     #include "Debug.h"
     #include "ParserDecl.h"
     #include "UIO.h"
@@ -210,9 +210,12 @@ full_instruction_parametr_list
     ;
 
 instruction_parametr_list
-    : REGISTER instruction_parametr_list
-    | ADDRESS_REGISTER instruction_parametr_list
-    | REGISTER
+    : instruction_parametr_list ',' instruction_parameter
+    | instruction_parameter
+    ;
+
+instruction_parameter
+    : REGISTER
     | ADDRESS_REGISTER
     | ID
     | NUMBER

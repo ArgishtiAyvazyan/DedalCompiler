@@ -37,6 +37,6 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
         UIO::Write("Unknown result.", module, MessageType::Error);
     }
 
-    std::cout << "End"<< std::endl;
+    std::cout << "\nEnd Task." << std::endl;
     return 0;
 }

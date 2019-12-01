@@ -1,7 +1,7 @@
 %{
     #include "Debug.h"
     #include "ParserDecl.h"
-    #include <iostream>
+    #include <string>
     #include <stdio.h>
     #include "Parser.hpp"
     #include "Configs.hpp"
@@ -42,8 +42,8 @@ string \".*\"
 
 "#".* { /* one line comment */ }
 
-{space}* {}
-{tab}* {}
+<*>{space}* {}
+<*>{tab}* {}
 
 {string}                    { Logger("STRING_LITERAL"); return STRING_LITERAL; }
 {char}                      { Logger("CHAR_LITERAL");   return CHAR_LITERAL;   }
@@ -134,7 +134,7 @@ string \".*\"
 "]"                         { Logger("]");      return yytext[0];              }
 <*>";"                      { Logger(";");      return yytext[0];              }
 ":"                         { Logger(":");      return yytext[0];              }
-","                         { Logger(",");      return yytext[0];              }
+<*>","                      { Logger(",");      return yytext[0];              }
 "="                         { Logger("=");      return yytext[0];              }
 "!"                         { Logger("=");      return yytext[0];              }
 
