@@ -30,7 +30,7 @@ enum class Color
 };
 
 static inline const std::unordered_map <MessageType, Color> s_mapMessageColors
-{ 
+{
       std::make_pair(MessageType::Info,    Color::FG_GREEN)
     , std::make_pair(MessageType::Warning, Color::FG_BLUE)
     , std::make_pair(MessageType::Error,   Color::FG_RED)
@@ -46,7 +46,7 @@ void UIO::Write(std::string_view svMessage, std::string_view svModule, MessageTy
 {
     const auto color = Color(eMessageType);
     std::cout << "\033[4;" << color << "m";
-    if constexpr (Config::DEBUG)
+    if constexpr (gen::Config::DEBUG)
     {
         const auto& strLogType = s_mapMessageTypeName.at(eMessageType);
         std::cout << strLogType << "\t";

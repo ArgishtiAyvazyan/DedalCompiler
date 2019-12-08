@@ -46,13 +46,8 @@ ENDMACRO(LEX_FILE)
 YACC_FILE(Parser.y)
 LEX_FILE(Lexer.l)
 
-# add_executable(DedalCompiler
-#     main.cpp
-#     Parser.cpp
-#     Lexer.cpp
-# )
 
-add_library(Parser_lib STATIC Parser.cpp Lexer.cpp)
+add_library(Parser_lib STATIC Parser.cpp Lexer.cpp CParser.cpp CParserHelper.cpp)
 
 # INTERFACE targets only have INTERFACE properties
 target_include_directories(Parser_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

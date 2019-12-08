@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # The project name
-project(hello_cmake)
+project(AssemblyCompiler)
 
 if (MSVC)
     # warning level 4 and all warnings as errors
@@ -34,7 +34,7 @@ else()
         # -Wconversion
         -Wunreachable-code
         # -save-temps
-        -Weffc++
+        # -Weffc++
     )
 endif()
 

@@ -1,10 +1,14 @@
 %{
+    #include "CParserHelper.hpp"
     #include <string>
+    #include <vector>
     #include "Debug.h"
-    #include "ParserDecl.h"
+    #include "ParserDecl.hpp"
     #include "UIO.h"
     #include "Configs.hpp"
-
+    #include "CParser.hpp"
+    #include <iostream>
+    #include <map>
 
 
     int yylex();
@@ -15,12 +19,12 @@
     extern int yyint;
     extern char* yytext;
     extern std::string_view yyid;
-
+    extern EOperationCode eOperationCode;
     static std::string_view module = "Parser";
 
 static void Logger(std::string_view message)
 {
-    if constexpr (Config::ENABLE_PARSER_LOGING)
+    if constexpr (gen::Config::ENABLE_PARSER_LOGING)
     {
         const std::string sFullMessage = "Line : " + std::to_string(lineNumber) + " | " + message.data();
         UIO::Write(sFullMessage, module, MessageType::Debug);
@@ -31,20 +35,21 @@ static void Logger(std::string_view message)
 
 %error-verbose
 
-%token STACK DATA CODE MAIN
-%token ASSIGN PRINT CMP TEST JUMP JZ JNZ JO JNO JC JNC JNE ADD SUB MUL DIV
-%token MOVE CALL PUSH POP PUSHSF POPSF NOP SWAP AND GFLR SFLR
-%token SHL SHR ROL ROR SAL SAR RCL RCR ADC SBB IMUL IDIV NEG LOAD STORE
-%token INC DEC OUT IN
-%token CAST
+%token TK_STACK TK_DATA TK_CODE TK_MAIN
+%token TK_OPERATION
+%token TK_ASSIGN TK_PRINT TK_CMP TK_TEST TK_JUMP TK_JZ TK_JNZ TK_JO TK_JNO TK_JC TK_JNC TK_JNE TK_ADD TK_SUB TK_MUL TK_DIV
+%token TK_MOVE TK_CALL TK_PUSH TK_POP TK_PUSHSF TK_POPSF TK_NOP TK_SWAP TK_AND TK_GFLR TK_SFLR TK_NULL
+%token TK_SHL TK_SHR TK_ROL TK_ROR TK_SAL TK_SAR TK_RCL TK_RCR TK_ADC TK_SBB TK_IMUL TK_IDIV TK_NEG TK_LOAD TK_STORE
+%token TK_INC TK_DEC TK_OUT TK_IN
+%token TK_CAST
 
-%token REGISTER ADDRESS_REGISTER OPERATION_SIZE
-%token BYTE CHAR WORD DWORD QWORD
-%token STRING_LITERAL CHAR_LITERAL ID NUMBER
-%token FUNC E_FUNC RET
-%token NEW_LINE
+%token TK_REGISTER TK_ADDRESS_REGISTER TK_OPERATION_SIZE
+%token TK_BYTE TK_CHAR TK_WORD TK_DWORD TK_QWORD
+%token TK_STRING_LITERAL TK_CHAR_LITERAL TK_ID TK_NUMBER
+%token TK_FUNC TK_E_FUNC TK_RET
+%token TK_NEW_LINE
 
-%token BREAK
+%token TK_BREAK
 
 %start translation_unit
 
@@ -57,16 +62,25 @@ translation_unit
 
 
 segment
-    : STACK stack_size
-    | DATA data_segment
-    | CODE code_segment
-    | MAIN main_entry
+    : TK_STACK stack_size
+    | TK_DATA
+    {
+        CParserHelper::get().ReadDataSegmentBegin();
+    }
+    data_segment
+    | TK_CODE
+    {
+        CParserHelper::get().ReadCodeSegmentBegin();
+    }
+    code_segment
+    | TK_MAIN main_entry
     ;
 
 stack_size
-    : '=' NUMBER ';'
+    : '=' TK_NUMBER ';'
     {
         Logger(" >>>> Stack size <<<< : " + std::to_string(yyint));
+        CParserHelper::get().ReadStackSize(yyint);
     }
     ;
 
@@ -76,36 +90,41 @@ data_segment
     ;
 
 variable_declaration
-    : variable_type ID ';'
+    : variable_type TK_ID ';'
     {
         // parsing variable type and name
         // ...
         Logger("-> variable_type ID");
+        CParserHelper::get().GenerateVariableDeclaration();
     }
-    | variable_type ID '=' variable_initializer ';'
+    | variable_type TK_ID '=' variable_initializer ';'
     {
         Logger("-> variable_type ID '=' variable_initializer");
+        CParserHelper::get().GenerateVariableDeclaration();
     }
-    | variable_type ID '[' ']' '=' variable_initializer_list ';'
+    | variable_type TK_ID '[' ']' '=' variable_initializer_list ';'
     {
         Logger("-> variable_type ID '[' ']' '=' variable_initializer_list");
+        CParserHelper::get().GenerateVariableDeclaration();
     }
-    | variable_type ID '[' NUMBER ']' ';'
+    | variable_type TK_ID '[' TK_NUMBER ']' ';'
     {
-        Logger("-> variable_type ID '[' NUMBER ']'");
+        Logger("-> variable_type ID '[' TK_NUMBER ']'");
+        CParserHelper::get().GenerateVariableDeclaration();
     }
-    | variable_type ID '[' NUMBER ']' '=' variable_initializer_list ';'
+    | variable_type TK_ID '[' TK_NUMBER ']' '=' variable_initializer_list ';'
     {
-        Logger("-> variable_type ID '[' NUMBER ']' '=' variable_initializer_list");
+        Logger("-> variable_type ID '[' TK_NUMBER ']' '=' variable_initializer_list");
+        CParserHelper::get().GenerateVariableDeclaration();
     }
     ;
 
 variable_type
-    : CHAR
-    | BYTE
-    | WORD
-    | DWORD
-    | QWORD
+    : TK_CHAR
+    | TK_BYTE
+    | TK_WORD
+    | TK_DWORD
+    | TK_QWORD
     ;
 
 /* TODO : qnnarkerl = momendy. */
@@ -120,9 +139,9 @@ variable_initializer
     ;
 
 literal
-    : STRING_LITERAL
-    | CHAR_LITERAL
-    | NUMBER
+    : TK_STRING_LITERAL
+    | TK_CHAR_LITERAL
+    | TK_NUMBER
     ;
 
 code_segment
@@ -131,11 +150,19 @@ code_segment
     ;
 
 function
-    : FUNC ID ':' instruction_list RET ';' E_FUNC
+    : TK_FUNC TK_ID
+    {
+        CParserHelper::get().StartFunctionDeclaration(yytext);
+        Logger("-> function");
+    } ':' instruction_list TK_RET ';' TK_E_FUNC
+    {
+        CParserHelper::get().EndFunctionDeclaration();
+        Logger("-> end function");
+    }
     {
         Logger("Function Definition");
     }
-    | FUNC ID ';'
+    | TK_FUNC TK_ID ';'
     {
         Logger("Function forward Declaration");
     }
@@ -147,84 +174,50 @@ instruction_list
     ;
 
 instruction
-    : ASSIGN full_instruction_parametr_list ';'
-    | PRINT
-    | CMP full_instruction_parametr_list ';'
-    | TEST full_instruction_parametr_list ';'
-    | JUMP ID ';'
+    : TK_OPERATION full_instruction_parametr_list ';'
     {
-        Logger("Parse jump instruction.");
+        CParserHelper::get().GenerateOperation(eOperationCode);
     }
-    | JZ ID ';'
-    | JNZ ID ';'
-    | JO ID ';'
-    | JNO ID ';'
-    | JC ID ';'
-    | JNC ID ';'
-    | JNE ID ';'
-    | ADD full_instruction_parametr_list ';'
-    | SUB full_instruction_parametr_list ';'
-    | MUL full_instruction_parametr_list ';'
-    | IMUL full_instruction_parametr_list ';'
-    | DIV full_instruction_parametr_list ';'
-    | IDIV full_instruction_parametr_list ';'
-    | MOVE full_instruction_parametr_list ';'
-    | CALL ADDRESS_REGISTER ';'
-    | PUSH full_instruction_parametr_list ';'
-    | POP full_instruction_parametr_list ';'
-    | PUSHSF ';'
-    | POPSF ';'
-    | ID ':'
-    | NOP ';'
+    | TK_OPERATION ';'
     {
-        // Empty instruction.
+        CParserHelper::get().GenerateOperation(eOperationCode);
     }
-    | SWAP full_instruction_parametr_list ';'
-    | AND full_instruction_parametr_list ';'
-    | GFLR full_instruction_parametr_list ';'
-    | SFLR full_instruction_parametr_list ';'
-    | INC full_instruction_parametr_list ';'
-    | DEC full_instruction_parametr_list ';'
-    | SHL full_instruction_parametr_list ';'
-    | SHR full_instruction_parametr_list ';'
-    | ROL full_instruction_parametr_list ';'
-    | ROR full_instruction_parametr_list ';'
-    | SAL full_instruction_parametr_list ';'
-    | SAR full_instruction_parametr_list ';'
-    | RCL full_instruction_parametr_list ';'
-    | RCR full_instruction_parametr_list ';'
-    | ADC full_instruction_parametr_list ';'
-    | SBB full_instruction_parametr_list ';'
-    | NEG full_instruction_parametr_list ';'
-    | CAST OPERATION_SIZE OPERATION_SIZE REGISTER ';'
-    | LOAD full_instruction_parametr_list ';'
-    | STORE full_instruction_parametr_list ';'
-    | OUT full_instruction_parametr_list ';'
-    | IN full_instruction_parametr_list ';'
-    | BREAK ';'
+    | TK_ID ':'
+    {
+        // CParserHelper::get().ReadLabel();
+    }
+    | TK_CAST TK_OPERATION_SIZE TK_OPERATION_SIZE TK_REGISTER ';'
+    {
+        CParserHelper::get().ReadCast();
+    }
     ;
+
 
 full_instruction_parametr_list
     : instruction_parametr_list
-    | OPERATION_SIZE instruction_parametr_list
+    | TK_OPERATION_SIZE instruction_parametr_list
     ;
 
 instruction_parametr_list
-    : instruction_parametr_list ',' instruction_parameter
-    | instruction_parameter
-    ;
-
-instruction_parameter
-    : REGISTER
-    | ADDRESS_REGISTER
-    | ID
-    | NUMBER
+    : TK_ID
+    | TK_REGISTER
+    | TK_REGISTER ',' TK_REGISTER
+    | TK_REGISTER ',' TK_NUMBER
+    | TK_REGISTER ',' TK_ID
+    | TK_REGISTER ',' TK_ADDRESS_REGISTER
+    | TK_ADDRESS_REGISTER
+    | TK_ADDRESS_REGISTER ',' TK_REGISTER
+    | TK_ADDRESS_REGISTER ',' TK_ADDRESS_REGISTER
+    | TK_ADDRESS_REGISTER ',' TK_ID
+    | TK_ADDRESS_REGISTER ',' TK_NUMBER
+    | TK_ADDRESS_REGISTER ',' TK_NULL
     ;
 
 main_entry
-    : '=' ID ';'
+    : '=' TK_ID ';'
     {
         Logger(std::string("MAIN '='") + yyid.data());
+        CParserHelper::get().ReadEntryPoint(yyid);
     }
     ;
 

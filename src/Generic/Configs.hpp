@@ -1,5 +1,3 @@
-#pragma once
-
 /**
  * @copyright (C) 2019 by Argishti Ayvazyan
  * @file Configs.h
@@ -7,6 +5,11 @@
  * @date 28 nov 2019
  * @brief The file contains interfaces for controlling compilation modes.
  */
+
+#pragma once
+
+namespace gen
+{
 
 /**
  * @class Config
@@ -17,9 +20,9 @@ class Config
 public:
 
     /**
-     * @brief if true, various mechanisms for checking the validity of the code \n
-     *      are turned on, which can cause a slowdown in execution time and also \n
-     *      includes a detailed infarmation for data output.
+     * @brief if true, various mechanisms for checking the validity of the \n
+     *      code are turned on, which can cause a slowdown in execution time \n
+     *      and also includes a detailed infarmation for data output.
      */
     static constexpr bool DEBUG = true;
 
@@ -33,3 +36,5 @@ public:
      */
     static constexpr bool ENABLE_LEXER_LOGING = false;
 };
+
+} // namespace gen

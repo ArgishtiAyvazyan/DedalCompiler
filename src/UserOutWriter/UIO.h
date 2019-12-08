@@ -1,5 +1,3 @@
-#pragma once
-
 /**
  * @copyright (C) 2019 by Argishti Ayvazyan
  * @file UIO.h
@@ -7,6 +5,7 @@
  * @date 28 nov 2019
  * @brief A file containing an interface for input and output.
  */
+#pragma once
 
 #include <string_view>
 
