@@ -1,7 +1,7 @@
 project (Generic)
 
 # Header only library, therefore INTERFACE
-add_library(Generic_lib STATIC Debug.cpp)
+add_library(Generic_lib STATIC Debug.cpp CException.cpp)
 
 # INTERFACE targets only have INTERFACE properties
 target_include_directories(Generic_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
