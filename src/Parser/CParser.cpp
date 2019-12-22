@@ -22,6 +22,15 @@ CParser::~CParser()
     yyin = nullptr;
 }
 
+void CParser::SetLineNumber(const std::size_t iLineNumber)
+{
+    m_iLineNumber = iLineNumber;
+}
+
+std::size_t CParser::GetLineNumber() const
+{
+    return m_iLineNumber;
+}
 
 void CParser::SetFileName(std::string_view svFileName)
 {

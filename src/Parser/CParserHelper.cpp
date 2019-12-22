@@ -28,6 +28,10 @@ CParserHelper::CParserHelper()
 {
 }
 
+void CParserHelper::SetLineNumber(std::size_t iLineNumber)
+{
+    CParser::get().SetLineNumber(iLineNumber);
+}
 
 void CParserHelper::Enqueue(EArgType type, std::string_view svValue)
 {
@@ -130,7 +134,7 @@ void CParserHelper::ReadCodeSegmentBegin()
     CParser::get().ReadCodeSegmentBegin();
 }
 
-void CParserHelper::ReadDataType(EDataType sDataType)
+void CParserHelper::ReadDataType(core::EDataType sDataType)
 {
     m_eDataType = sDataType;
 }
@@ -168,7 +172,7 @@ void CParserHelper::GenerateVariableDeclaration()
                         {
                             try
                             {
-                                res = numeric_cast<TValue>(lexical_cast<TQWORD>(val.data()));
+                                res = numeric_cast<TValue>(lexical_cast<core::TQWORD>(val.data()));
                             } catch (...)
                             {
                                 res = numeric_cast<TValue>(std::strtol(val.data(), nullptr, 16));
@@ -185,7 +189,7 @@ void CParserHelper::GenerateVariableDeclaration()
     };
     switch (m_eDataType)
     {
-        case EDataType::CHAR:
+        case core::EDataType::CHAR:
             {
                 std::string list;
                 if (not m_vecLiterals.empty())
@@ -196,24 +200,24 @@ void CParserHelper::GenerateVariableDeclaration()
                 CParser::get().ReadVariableDeclaration(m_cidVariableName, m_stArraySize, list);
                 break;
             }
-        case EDataType::BYTE:
+        case core::EDataType::BYTE:
             {
-                lConverter(TBYTE());
+                lConverter(core::TBYTE());
             }
          break;
-        case EDataType::WORD:
+        case core::EDataType::WORD:
             {
-                lConverter(TWORD());
+                lConverter(core::TWORD());
             }
          break;
-        case EDataType::DWORD:
+        case core::EDataType::DWORD:
             {
-                lConverter(TDWORD());
+                lConverter(core::TDWORD());
             }
          break;
-        case EDataType::QWORD:
+        case core::EDataType::QWORD:
             {
-                lConverter(TQWORD());
+                lConverter(core::TQWORD());
             }
          break;
         default:

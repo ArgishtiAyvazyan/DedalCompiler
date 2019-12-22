@@ -20,6 +20,8 @@
 
 class CParserHelper
 {
+    using EOperationSize = core::EOperationSize;
+    using EOperationCode = core::EOperationCode;
 
 public:
 
@@ -45,6 +47,8 @@ public:
 
 
     CParserHelper();
+
+    void SetLineNumber(std::size_t iLineNumber);
 
     void Enqueue(EArgType type, std::string_view svValue);
 
@@ -72,7 +76,7 @@ public:
 
     void ReadCodeSegmentBegin();
 
-    void ReadDataType(EDataType sDataType);
+    void ReadDataType(core::EDataType sDataType);
 
     void AddToLiteralsList(std::string_view svLiteral);
 
@@ -86,7 +90,7 @@ private:
     TArgTypeVec m_vecArsQueue;
     TValueVec m_vecValuesQueue;
     TLiteralsVec m_vecLiterals;
-    EDataType m_eDataType;
+    core::EDataType m_eDataType;
     CID m_cidVariableName;
     std::size_t m_stArraySize;
     EOperationSize m_eOpSizeFirst;

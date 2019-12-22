@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "CException.h"
+#include "CBuffer.h"
 
 namespace vm
 {
@@ -19,33 +19,30 @@ namespace vm
  * @class CMemory
  * @brief The class CMemory represents memory concept.
  */
-class CMemory
+class CMemory : public compiler::CBuffer
 {
-    static constexpr int64_t s_default_size = 4096;
-
 public:
-    static constexpr int64_t nulladdress = 0;
-
-public:
-    using TAddress = int64_t;
-    using TCount = int64_t;
-
-    CMemory(const CMemory&) = delete;
-    CMemory(CMemory&&) = delete;
-    void operator=(const CMemory&) = delete;
-    void operator=(CMemory&&) = delete;
-
     /**
-     * @brief Construct a new CMemory object
+     * @brief Construct a new CBuffer object
      *
      * @param size The memory size.
      */
-    CMemory(int64_t size = s_default_size)
-        : m_vecMemory(size)
+    CMemory(int64_t size)
+        : CBuffer(size)
     {
     }
 
-    /**
+    CMemory()
+        : CBuffer()
+    {
+    }
+
+    CMemory(compiler::CBuffer& buf)
+    {
+        m_vecBuffer = std::move(buf.m_vecBuffer);
+    }
+
+        /**
      * @brief Reads the value at the address.
      *
      * @tparam TValue The value type.
@@ -56,9 +53,9 @@ public:
     [[nodiscard]] TValue& Read(TAddress address)
     {
         BASE_CHECK (address < this->Size(), "Out of memory range.");
-        BASE_CHECK (address + sizeof(TValue) < this->Size(), "Out of memory range.");
+        BASE_CHECK ((int)(address + sizeof(TValue)) < this->Size(), "Out of memory range.");
         BASE_CHECK (address != nulladdress, "null pointer dereference.");
-        return reinterpret_cast<TValue&>(m_vecMemory[address]);
+        return reinterpret_cast<TValue&>(m_vecBuffer[address]);
     }
 
     /**
@@ -74,23 +71,8 @@ public:
         BASE_CHECK (address < this->Size(), "Out of memory range.");
         BASE_CHECK (address + sizeof(TValue) < this->Size(), "Out of memory range.");
         BASE_CHECK (address != nulladdress, "null pointer dereference.");
-        reinterpret_cast<TValue&>(m_vecMemory[address]) = value;
+        reinterpret_cast<TValue&>(m_vecBuffer[address]) = value;
     }
-
-public:
-
-    /**
-     * @brief Gets memory size.
-     *
-     * @return int64_t The memory size.
-     */
-    int64_t Size() const
-    {
-        return std::size(m_vecMemory);
-    }
-
-private:
-    std::vector<uint16_t>	m_vecMemory;
 };
 
 } // namespace vm

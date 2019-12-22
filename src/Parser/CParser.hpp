@@ -16,12 +16,15 @@
 /**
  * @class CParser
  * @brief CParser is a singleton class that provides APIs for parsing assembler code.
- * 
+ *
  * @details Class CParser Provides an interface for parsing assembler code; this is implemented in \n
  *           the style of an observer.
  */
 class CParser
 {
+    using EOperationSize = core::EOperationSize;
+    using EOperationCode = core::EOperationCode;
+
     friend class CParserHelper;
 
     template <typename ... TArgs>
@@ -53,10 +56,10 @@ class CParser
     using TReadCodeSegmentBeginEvent        = CEvent<>;
 
     using TReadCHARDeclarationEvent         = CEvent<CID, std::size_t, std::string>;
-    using TReadBYTEDeclarationEvent         = CEvent<CID, std::size_t, std::vector<TBYTE>>;
-    using TReadWORDDeclarationEvent         = CEvent<CID, std::size_t, std::vector<TWORD>>;
-    using TReadDWORDDeclarationEvent        = CEvent<CID, std::size_t, std::vector<TDWORD>>;
-    using TReadQWORDDeclarationEvent        = CEvent<CID, std::size_t, std::vector<TQWORD>>;
+    using TReadBYTEDeclarationEvent         = CEvent<CID, std::size_t, std::vector<core::TBYTE>>;
+    using TReadWORDDeclarationEvent         = CEvent<CID, std::size_t, std::vector<core::TWORD>>;
+    using TReadDWORDDeclarationEvent        = CEvent<CID, std::size_t, std::vector<core::TDWORD>>;
+    using TReadQWORDDeclarationEvent        = CEvent<CID, std::size_t, std::vector<core::TQWORD>>;
 
 public:
 
@@ -100,7 +103,7 @@ public:
     /**
      * @brief Set the assembly filename object. \n
      *         After call Starts Parsing, starts parsing assembly code.
-     * 
+     *
      * @param svFileName The file name.
      */
     void SetFileName(std::string_view svFileName);
@@ -117,7 +120,7 @@ public:
 
     /**
      * @brief Gets CParser singleton instance.
-     * 
+     *
      * @return CParser The reference to CParser.
      */
     static CParser& get()
@@ -126,7 +129,12 @@ public:
         return p;
     }
 
+    std::size_t GetLineNumber() const;
+
 private:
+
+    void SetLineNumber(const std::size_t iLineNumber);
+
 
     void StartFunctionDeclaration(CID id);
 
@@ -190,4 +198,6 @@ private:
 
 private:
     std::string_view m_svFileName;
+
+    std::size_t m_iLineNumber;
 };

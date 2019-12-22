@@ -6,6 +6,10 @@
  * @copyright Copyright (c) 2019
  */
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
 #include "CException.h"
 
 #include <boost/stacktrace.hpp>
@@ -66,7 +70,10 @@ std::string CException::CurrentStackTrace()
 {
     std::stringstream ss;
     ss << boost::stacktrace::stacktrace() << std::endl;
-    return ss.str();
+    const auto stack = ss.str();
+    std::cout << stack << std::endl;
+    std::cout << m_strMessage << std::endl;
+    return stack;
 }
 
 

@@ -51,6 +51,6 @@ add_library(Parser_lib STATIC Parser.cpp Lexer.cpp CParser.cpp CParserHelper.cpp
 
 # INTERFACE targets only have INTERFACE properties
 target_include_directories(Parser_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(Parser_lib PRIVATE Generic_lib UserOutWriter_lib)
+target_link_libraries(Parser_lib PRIVATE Generic_lib UserOutWriter_lib Core_lib)
 
 target_compile_features(Parser_lib INTERFACE cxx_std_17)

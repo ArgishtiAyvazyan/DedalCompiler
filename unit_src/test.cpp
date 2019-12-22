@@ -3,6 +3,7 @@
 #include "ParserUnitTests.hpp"
 #include "FlagsUnitTests.hpp"
 #include "MemoryUnitTests.hpp"
+#include "CompilerUnitTests.hpp"
 
 int main(int argc, char **argv)
 {

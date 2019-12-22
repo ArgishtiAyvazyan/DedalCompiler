@@ -6,6 +6,6 @@ project(Application)
 
 # The main program
 add_executable(gmain_exec main.cpp)
-target_link_libraries(gmain_exec PRIVATE Generic_lib UserOutWriter_lib Parser_lib)
+target_link_libraries(gmain_exec PRIVATE Generic_lib UserOutWriter_lib Parser_lib Compiler_lib VirtualMachine_lib Core_lib)
 target_compile_definitions(gmain_exec PRIVATE CATCH_CONFIG_CONSOLE_WIDTH=60)
 

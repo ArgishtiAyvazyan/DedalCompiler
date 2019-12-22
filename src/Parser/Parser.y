@@ -19,7 +19,7 @@
     extern int yyint;
     extern char* yytext;
     extern std::string_view yyid;
-    extern EOperationCode eOperationCode;
+    extern core::EOperationCode eOperationCode;
     static std::string_view module = "Parser";
 
 static void Logger(std::string_view message)
@@ -152,7 +152,7 @@ code_segment
 function
     : TK_FUNC TK_ID
     {
-        CParserHelper::get().StartFunctionDeclaration(yytext);
+        CParserHelper::get().StartFunctionDeclaration(yyid);
         Logger("-> function");
     } ':' instruction_list TK_RET ';' TK_E_FUNC
     {

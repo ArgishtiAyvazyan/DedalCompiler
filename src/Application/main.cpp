@@ -4,6 +4,9 @@
 #include "UIO.h"
 #include "CParser.hpp"
 #include "CException.h"
+#include "CCompiler.h"
+#include "CProcessor.h"
+#include "CMemory.h"
 
 using namespace std::string_literals;
 
@@ -12,10 +15,19 @@ static std::string_view module = "Main";
 int main([[maybe_unused]]int argc, [[maybe_unused]]char** argv)
 try
 {
-    BASE_CHECK (argc >= 2, "Input file is missing");
-    auto& parser = CParser::get();
-    parser.SetFileName(argv[1]);
-    parser.StartParsing();
+    BASE_CHECK (argc >= 2, "Input file is missing.");
+    // auto& parser = CParser::get();
+    // parser.SetFileName(argv[1]);
+    // parser.StartParsing();
+
+    using namespace compiler;
+
+    CCompiler compiler({ argv[1] });
+
+    CBuffer buffer = compiler.GetCompiledCode();
+
+    vm::CMemory memory { buffer };
+    vm::CProcessor procesor { memory };
 
     std::cout << "\nEnd Task." << std::endl;
     return 0;
