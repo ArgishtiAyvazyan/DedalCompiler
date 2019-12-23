@@ -38,6 +38,60 @@ make -j <job count>
 * Linux
 * WSL (Windows Subsystem for Linux)
 
+## Project structure
+
+```
+├── Application
+│   ├── CMakeLists.txt
+│   └── main.cpp
+├── CMakeLists.txt
+├── Compiler
+│   ├── CBuffer.h
+│   ├── CCommandContext.h
+│   ├── CCompiler.cpp
+│   ├── CCompiler.h
+│   ├── CMakeLists.txt
+│   ├── Commands.cpp
+│   └── Commands.h
+├── Core
+│   ├── CInsArg.cpp
+│   ├── CInsArg.h
+│   ├── CMakeLists.txt
+│   └── Decl.h
+├── Generic
+│   ├── CEvent.hpp
+│   ├── CException.cpp
+│   ├── CException.h
+│   ├── CMakeLists.txt
+│   ├── Configs.hpp
+│   ├── Debug.cpp
+│   └── Debug.h
+├── Parser
+│   ├── CMakeLists.txt
+│   ├── CParser.cpp
+│   ├── CParserHelper.cpp
+│   ├── CParserHelper.hpp
+│   ├── CParser.hpp
+│   ├── Lexer.l
+│   ├── ParserDecl.hpp
+│   └── Parser.y
+├── tree.txt
+├── UserOutWriter
+│   ├── CMakeLists.txt
+│   ├── UIO.cpp
+│   └── UIO.h
+└── VirtualMachine
+    ├── CExecutor.cpp
+    ├── CExecutor.h
+    ├── CFlags.cpp
+    ├── CFlags.h
+    ├── CMakeLists.txt
+    ├── CMemory.h
+    ├── CProcessor.cpp
+    ├── CProcessor.h
+    └── SCPUState.h
+```
+
 ## Simple example
 
 ```assembly
